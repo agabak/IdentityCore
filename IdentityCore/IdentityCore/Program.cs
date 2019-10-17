@@ -18,9 +18,19 @@ namespace IdentityCore
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                 .ConfigureAppConfiguration(ApplicationConfiSetting)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static void ApplicationConfiSetting(HostBuilderContext ctx, IConfigurationBuilder builder)
+        {
+            // clearing up before building other properties
+            builder.Sources.Clear();
+
+            builder.AddJsonFile("config.json")
+                   .AddEnvironmentVariables();
+        }
     }
 }
